@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Criminals {
+  id String @id @default(uuid()) @db.Uuid
+  name String @db.VarChar(100)
+
+  crimes Crimes[]
+
+  @@map("criminals")
+}
+
+
+model Crimes {
+  id String @id @default(uuid()) @db.Uuid
+  description String @db.VarChar
+
+  criminalsId String @db.Uuid @map("criminals_id")
+  criminals Criminals @relation(fields: [criminalsId], references: [id])
+
+  guns Guns[]
+
+  @@map("crimes")
+}
+
+model Guns {
+  id String @id @default(uuid()) @db.Uuid
+
+  crimesId String @db.Uuid @map("crimes_id")
+  crimes Crimes @relation(fields: [crimesId], references: [id])
+
+  @@map("guns")
+}
