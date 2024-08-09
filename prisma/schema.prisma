@@ -41,8 +41,8 @@ model Guns {
   id String @id @default(uuid()) @db.Uuid
   name String @db.VarChar
   
-   crimesId String @db.Uuid @map("crimes_id")
-   crimes Crimes @relation(fields: [crimesId], references: [id])
+  crimesId String @db.Uuid @map("crimes_id")
+  crimes Crimes @relation(fields: [crimesId], references: [id])
   
   @@map("guns")
 }
